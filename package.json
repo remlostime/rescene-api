@@ -1,18 +1,25 @@
 {
   "name": "rescene-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "ReScene API — AI-powered environment remastering service",
+  "main": "dist/index.js",
   "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "@google-cloud/vertexai": "^1.10.0",
     "dotenv": "^17.3.1",
     "fastify": "^5.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

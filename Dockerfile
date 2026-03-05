@@ -1,7 +1,14 @@
+FROM node:20-slim AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npx tsc
+
 FROM node:20-slim
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --production
-COPY . .
+RUN npm ci --omit=dev
+COPY --from=builder /app/dist ./dist
 EXPOSE 8080
-CMD ["node", "server.js"]
+CMD ["node", "dist/index.js"]

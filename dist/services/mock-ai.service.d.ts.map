@@ -1,0 +1,1 @@
+{"version":3,"file":"mock-ai.service.d.ts","sourceRoot":"","sources":["../../src/services/mock-ai.service.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACV,UAAU,EACV,uBAAuB,EACxB,MAAM,uCAAuC,CAAC;AAE/C,qBAAa,aAAc,YAAW,UAAU;IACxC,uBAAuB,CAC3B,YAAY,EAAE,MAAM,EACpB,YAAY,CAAC,EAAE,MAAM,GACpB,OAAO,CAAC,uBAAuB,CAAC;CA0BpC"}
