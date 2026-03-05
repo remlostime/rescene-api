@@ -7,7 +7,10 @@ import analyzeRoute from './routes/analyze.route.js';
 
 async function main() {
   const config = loadEnvConfig();
-  const fastify = Fastify({ logger: true });
+  const fastify = Fastify({
+    logger: true,
+    bodyLimit: 10_485_760, // 10 MB — base64-encoded photos from iOS can exceed the 1 MB default
+  });
 
   const aiService: IAIService = config.useMockAI
     ? new MockAIService()
