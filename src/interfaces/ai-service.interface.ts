@@ -10,7 +10,7 @@ export interface RemasterOptionsResponse {
 
 export interface IAIService {
   generateRemasterOptions(
-    imageBase64: string,
+    imageGcsUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse>;
 }

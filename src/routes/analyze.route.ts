@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 
 interface AnalyzeRequestBody {
@@ -30,12 +31,20 @@ const analyzeRoute: FastifyPluginAsync = async (fastify: FastifyInstance) => {
       const { imageBase64, locationName } = request.body;
 
       try {
-        const data = await fastify.aiService.generateRemasterOptions(
+        const imageId = randomUUID();
+        const destinationPath = `temp/${imageId}.jpg`;
+
+        const gcsUri = await fastify.storageService.uploadBase64(
           imageBase64,
+          destinationPath,
+        );
+
+        const data = await fastify.aiService.generateRemasterOptions(
+          gcsUri,
           locationName,
         );
 
-        return reply.send({ status: 'success', data });
+        return reply.send({ status: 'success', imageId, data });
       } catch (error) {
         const message =
           error instanceof Error ? error.message : 'Unknown error during analysis';
