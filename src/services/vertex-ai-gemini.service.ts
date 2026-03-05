@@ -63,7 +63,7 @@ export class VertexAIGeminiService implements IAIService {
   }
 
   async generateRemasterOptions(
-    imageBase64: string,
+    imageGcsUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse> {
     const textPrompt = buildDirectorPrompt(locationName);
@@ -74,9 +74,9 @@ export class VertexAIGeminiService implements IAIService {
           role: 'user',
           parts: [
             {
-              inlineData: {
+              fileData: {
                 mimeType: 'image/jpeg',
-                data: imageBase64,
+                fileUri: imageGcsUri,
               },
             },
             { text: textPrompt },

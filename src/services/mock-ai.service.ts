@@ -5,7 +5,7 @@ import type {
 
 export class MockAIService implements IAIService {
   async generateRemasterOptions(
-    _imageBase64: string,
+    _imageGcsUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse> {
     const locationLabel = locationName ?? 'unknown location';
