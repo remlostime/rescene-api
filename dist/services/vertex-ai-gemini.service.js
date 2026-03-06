@@ -46,7 +46,7 @@ class VertexAIGeminiService {
             },
         });
     }
-    async generateRemasterOptions(imageBase64, locationName) {
+    async generateRemasterOptions(imageGcsUri, locationName) {
         const textPrompt = (0, director_prompt_js_1.buildDirectorPrompt)(locationName);
         const result = await this.model.generateContent({
             contents: [
@@ -54,9 +54,9 @@ class VertexAIGeminiService {
                     role: 'user',
                     parts: [
                         {
-                            inlineData: {
+                            fileData: {
                                 mimeType: 'image/jpeg',
-                                data: imageBase64,
+                                fileUri: imageGcsUri,
                             },
                         },
                         { text: textPrompt },

@@ -7,6 +7,6 @@ export interface VertexAIConfig {
 export declare class VertexAIGeminiService implements IAIService {
     private readonly model;
     constructor(config: VertexAIConfig);
-    generateRemasterOptions(imageBase64: string, locationName?: string): Promise<RemasterOptionsResponse>;
+    generateRemasterOptions(imageGcsUri: string, locationName?: string): Promise<RemasterOptionsResponse>;
 }
 //# sourceMappingURL=vertex-ai-gemini.service.d.ts.map

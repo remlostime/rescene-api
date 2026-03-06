@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const node_crypto_1 = require("node:crypto");
 const analyzeBodySchema = {
     type: 'object',
     required: ['imageBase64'],
@@ -18,8 +19,11 @@ const analyzeRoute = async (fastify) => {
     }, async (request, reply) => {
         const { imageBase64, locationName } = request.body;
         try {
-            const data = await fastify.aiService.generateRemasterOptions(imageBase64, locationName);
-            return reply.send({ status: 'success', data });
+            const imageId = (0, node_crypto_1.randomUUID)();
+            const destinationPath = `temp/${imageId}.jpg`;
+            const gcsUri = await fastify.storageService.uploadBase64(imageBase64, destinationPath);
+            const data = await fastify.aiService.generateRemasterOptions(gcsUri, locationName);
+            return reply.send({ status: 'success', imageId, data });
         }
         catch (error) {
             const message = error instanceof Error ? error.message : 'Unknown error during analysis';

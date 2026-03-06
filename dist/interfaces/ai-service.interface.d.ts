@@ -7,6 +7,6 @@ export interface RemasterOptionsResponse {
     options: RemasterOption[];
 }
 export interface IAIService {
-    generateRemasterOptions(imageBase64: string, locationName?: string): Promise<RemasterOptionsResponse>;
+    generateRemasterOptions(imageGcsUri: string, locationName?: string): Promise<RemasterOptionsResponse>;
 }
 //# sourceMappingURL=ai-service.interface.d.ts.map

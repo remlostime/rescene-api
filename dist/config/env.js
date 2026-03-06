@@ -13,6 +13,8 @@ function loadEnvConfig() {
         gcpProjectId,
         gcpLocation: process.env.GCP_LOCATION ?? 'us-central1',
         geminiModel: process.env.GEMINI_MODEL ?? 'gemini-2.0-flash',
+        gcsBucketName: process.env.GCS_BUCKET_NAME ?? 'rescene-images',
+        imageGenModel: process.env.IMAGE_GENERATION_MODEL ?? 'gemini-3.1-flash-image-preview',
         port: Number(process.env.PORT) || 8080,
         useMockAI,
     };

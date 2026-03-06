@@ -7,7 +7,7 @@ AI-powered environment remastering service. A stateless, serverless-ready backen
 The API implements a 2-step process to save bandwidth and compute:
 
 1. **Analyze** — The iOS app sends a Base64 image to `POST /api/analyze`. The server uploads it to GCS, passes the `gs://` URI to Gemini for analysis, and returns an `imageId` plus 3 creative remastering options.
-2. **Render** — The user picks an option. The app sends the `imageId` and `nano_prompt` to `POST /api/render`. The server references the source image in GCS, calls the Nano Banana 2 model (Gemini 3.1 Flash Image) for image editing, uploads the result to GCS, and returns a public HTTPS URL.
+2. **Render** — The user picks an option. The app sends the `imageId` and `nano_prompt` to `POST /api/render`. The server references the source image in GCS, calls Gemini 2.0 Flash for image editing, uploads the result to GCS, and returns a public HTTPS URL.
 
 ## Project Structure
 
@@ -128,6 +128,6 @@ Uses the previously uploaded image and a selected prompt to generate a remastere
 | `GCP_LOCATION`           | `us-central1`        | Vertex AI region                            |
 | `GEMINI_MODEL`           | `gemini-2.0-flash`   | Gemini model for scene analysis             |
 | `GCS_BUCKET_NAME`        | `rescene-images`     | GCS bucket for temporary image storage      |
-| `IMAGE_GENERATION_MODEL` | `gemini-3.1-flash-image-preview`| Nano Banana 2 model for image editing |
+| `IMAGE_GENERATION_MODEL` | `gemini-2.0-flash-preview-image-generation`| Gemini model for image editing |
 | `PORT`                   | `8080`               | Server port                                 |
 | `USE_MOCK_AI`            | `false`              | Use mock services (no GCP needed)           |

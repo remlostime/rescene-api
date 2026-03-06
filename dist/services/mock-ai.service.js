@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MockAIService = void 0;
 class MockAIService {
-    async generateRemasterOptions(_imageBase64, locationName) {
+    async generateRemasterOptions(_imageGcsUri, locationName) {
         const locationLabel = locationName ?? 'unknown location';
         return {
             options: [
