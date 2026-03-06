@@ -12,6 +12,7 @@ const mock_image_service_js_1 = require("./services/mock-image.service.js");
 const storage_service_js_1 = require("./services/storage.service.js");
 const analyze_route_js_1 = __importDefault(require("./routes/analyze.route.js"));
 const render_route_js_1 = __importDefault(require("./routes/render.route.js"));
+const chat_route_js_1 = __importDefault(require("./routes/chat.route.js"));
 async function main() {
     const config = (0, env_js_1.loadEnvConfig)();
     const fastify = (0, fastify_1.default)({
@@ -40,6 +41,7 @@ async function main() {
     fastify.decorate('imageService', imageService);
     await fastify.register(analyze_route_js_1.default);
     await fastify.register(render_route_js_1.default);
+    await fastify.register(chat_route_js_1.default);
     await fastify.listen({ port: config.port, host: '0.0.0.0' });
 }
 main().catch((err) => {
