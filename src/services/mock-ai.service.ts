@@ -2,6 +2,21 @@ import type {
   IAIService,
   RemasterOptionsResponse,
 } from '../interfaces/ai-service.interface.js';
+import type { ChatMessage, ChatResponse } from '../interfaces/chat.types.js';
+
+const ACTIONABLE_KEYWORDS = [
+  'cyberpunk',
+  'neon',
+  'sunset',
+  'golden hour',
+  'rain',
+  'snow',
+  'noir',
+  'vintage',
+  'film',
+  'mist',
+  'fog',
+];
 
 export class MockAIService implements IAIService {
   async generateRemasterOptions(
@@ -31,6 +46,34 @@ export class MockAIService implements IAIService {
             'Keep the foreground subject completely unchanged and pixel-perfect. Do not alter the subject\'s shape, texture, color, or position. Transform the background into a cyberpunk night scene with vivid neon lights in pink, cyan, and purple. Add reflective wet ground surfaces, glowing signage, and dramatic rim lighting on the subject edges from ambient neon sources.',
         },
       ],
+    };
+  }
+
+  async chatWithAgent(
+    _gcsUri: string,
+    message: string,
+    _history: ChatMessage[],
+  ): Promise<ChatResponse> {
+    const lower = message.toLowerCase();
+    const isActionable = ACTIONABLE_KEYWORDS.some((kw) => lower.includes(kw));
+
+    if (isActionable) {
+      return {
+        type: 'proposal_card',
+        text: '好的！根据你的描述，我为你准备了一个方案，看看是否符合你的期待：',
+        proposal: {
+          title: 'Cyberpunk Neon Rain',
+          description:
+            '将照片转变为充满赛博朋克风格的霓虹雨夜，霓虹灯光在湿润的地面上反射出迷幻色彩，科技感十足。',
+          nano_prompt:
+            'Keep the foreground subject completely unchanged and pixel-perfect. Do not alter the subject\'s shape, texture, color, or position. Transform the background into a cyberpunk night scene with heavy rain, vivid neon lights in pink, cyan, and purple reflecting off wet asphalt. Add volumetric fog, glowing holographic signage, dramatic rim lighting from neon sources, and rain streaks with motion blur.',
+        },
+      };
+    }
+
+    return {
+      type: 'chat_reply',
+      text: '你想要什么样的风格呢？比如赛博朋克霓虹风、温暖的黄金时刻、还是神秘的雾气效果？告诉我更多细节，我来帮你打造完美的画面！',
     };
   }
 }

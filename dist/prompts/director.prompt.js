@@ -10,7 +10,7 @@ The main subject (person, animal, or core foreground object) must remain 100% st
 OUTPUT RULES:
 - Return exactly 3 options.
 - "title" must be a catchy, short English title suitable for a mobile UI button (e.g. "Cinematic Sunset").
-- "description" must be a brief, evocative explanation written in Chinese (简体中文) describing the vibe to the end user.
+- "description" must be a brief, evocative explanation written in English describing the vibe to the end user.
 - "nano_prompt" must be a highly detailed, technical English prompt intended for an Image-to-Image generation model. It must explicitly instruct the model to preserve the foreground subject unchanged.`;
     let strategy;
     if (locationName) {

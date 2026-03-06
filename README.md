@@ -4,10 +4,17 @@ AI-powered environment remastering service. A stateless, serverless-ready backen
 
 ## Workflow
 
-The API implements a 2-step process to save bandwidth and compute:
+The API supports two workflows:
+
+### Quick Flow (Analyze → Render)
 
 1. **Analyze** — The iOS app sends a Base64 image to `POST /api/analyze`. The server uploads it to GCS, passes the `gs://` URI to Gemini for analysis, and returns an `imageId` plus 3 creative remastering options.
-2. **Render** — The user picks an option. The app sends the `imageId` and `nano_prompt` to `POST /api/render`. The server references the source image in GCS, calls the Nano Banana 2 model (Gemini 3.1 Flash Image) for image editing, uploads the result to GCS, and returns a public HTTPS URL.
+2. **Render** — The user picks an option. The app sends the `imageId` and `nano_prompt` to `POST /api/render`. The server references the source image in GCS, calls Gemini 2.0 Flash for image editing, uploads the result to GCS, and returns a public HTTPS URL.
+
+### Chat Flow (Chat → Render)
+
+1. **Chat** — The iOS app sends a message plus the full conversation history to `POST /api/chat`. The AI Photography Director agent either asks clarifying questions (`chat_reply`) or produces a proposal card with a technical rendering prompt (`proposal_card`). The client manages chat state and passes the full history on each request.
+2. **Render** — Once the user approves a proposal, the app sends the `imageId` and `nano_prompt` to `POST /api/render` as above.
 
 ## Project Structure
 
@@ -17,18 +24,22 @@ src/
 ├── config/env.ts                           # Typed environment configuration
 ├── interfaces/
 │   ├── ai-service.interface.ts             # IAIService contract + response types
+│   ├── chat.types.ts                       # Chat feature types (ChatMessage, Proposal, etc.)
 │   ├── storage-service.interface.ts        # IStorageService contract (GCS)
 │   └── image-service.interface.ts          # IImageService contract (Nano Banana 2)
 ├── services/
-│   ├── vertex-ai-gemini.service.ts         # Production: Vertex AI Gemini (analysis)
+│   ├── vertex-ai-gemini.service.ts         # Production: Vertex AI Gemini (analysis + chat)
 │   ├── vertex-ai-image.service.ts          # Production: Nano Banana 2 (image editing)
 │   ├── storage.service.ts                  # Production: Google Cloud Storage
-│   ├── mock-ai.service.ts                  # Local dev: mock analysis responses
+│   ├── mock-ai.service.ts                  # Local dev: mock analysis + chat responses
 │   └── mock-image.service.ts               # Local dev: mock image generation
 ├── routes/
 │   ├── analyze.route.ts                    # POST /api/analyze — scene analysis
+│   ├── chat.route.ts                       # POST /api/chat — AI director chat
 │   └── render.route.ts                     # POST /api/render — image generation
-├── prompts/director.prompt.ts              # "Master Director" prompt builder
+├── prompts/
+│   ├── director.prompt.ts                  # "Master Director" prompt builder (analyze)
+│   └── chat-agent.prompt.ts               # Chat agent system prompt (chat)
 └── types/fastify.d.ts                      # Fastify type augmentation
 ```
 
@@ -100,6 +111,49 @@ Uploads the image to GCS, analyzes the scene with Gemini, and returns 3 remaster
 }
 ```
 
+### POST /api/chat
+
+Multi-turn chat with the AI Photography Director agent. The agent clarifies the user's vision or produces a rendering proposal.
+
+**Request body:**
+
+| Field     | Type           | Required | Description                                        |
+|-----------|----------------|----------|----------------------------------------------------|
+| `imageId` | string         | yes      | UUID returned from `/api/analyze`                  |
+| `message` | string         | yes      | The user's latest message                          |
+| `history` | ChatMessage[]  | yes      | Full conversation history (client-managed)         |
+
+Each `ChatMessage` is `{ role: "user" | "model", text: string }`.
+
+**Response (200) — chat_reply:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "type": "chat_reply",
+    "text": "Do you mean cyberpunk cool or vintage film cool?"
+  }
+}
+```
+
+**Response (200) — proposal_card:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "type": "proposal_card",
+    "text": "Got it! Here's a proposal based on your vision:",
+    "proposal": {
+      "title": "Cyberpunk Neon Rain",
+      "description": "将照片转变为充满赛博朋克风格的霓虹雨夜...",
+      "nano_prompt": "Keep the foreground subject completely unchanged..."
+    }
+  }
+}
+```
+
 ### POST /api/render
 
 Uses the previously uploaded image and a selected prompt to generate a remastered image.
@@ -128,6 +182,6 @@ Uses the previously uploaded image and a selected prompt to generate a remastere
 | `GCP_LOCATION`           | `us-central1`        | Vertex AI region                            |
 | `GEMINI_MODEL`           | `gemini-2.0-flash`   | Gemini model for scene analysis             |
 | `GCS_BUCKET_NAME`        | `rescene-images`     | GCS bucket for temporary image storage      |
-| `IMAGE_GENERATION_MODEL` | `gemini-3.1-flash-image-preview`| Nano Banana 2 model for image editing |
+| `IMAGE_GENERATION_MODEL` | `gemini-2.0-flash-preview-image-generation`| Gemini model for image editing |
 | `PORT`                   | `8080`               | Server port                                 |
 | `USE_MOCK_AI`            | `false`              | Use mock services (no GCP needed)           |

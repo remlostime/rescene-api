@@ -1,3 +1,5 @@
+import type { ChatMessage, ChatResponse } from './chat.types.js';
+
 export interface RemasterOption {
   title: string;
   description: string;
@@ -13,4 +15,10 @@ export interface IAIService {
     imageGcsUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse>;
+
+  chatWithAgent(
+    gcsUri: string,
+    message: string,
+    history: ChatMessage[],
+  ): Promise<ChatResponse>;
 }

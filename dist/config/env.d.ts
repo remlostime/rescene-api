@@ -3,6 +3,8 @@ export interface EnvConfig {
     gcpProjectId: string;
     gcpLocation: string;
     geminiModel: string;
+    gcsBucketName: string;
+    imageGenModel: string;
     port: number;
     useMockAI: boolean;
 }

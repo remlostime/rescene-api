@@ -9,6 +9,7 @@ import { MockImageService } from './services/mock-image.service.js';
 import { StorageService } from './services/storage.service.js';
 import analyzeRoute from './routes/analyze.route.js';
 import renderRoute from './routes/render.route.js';
+import chatRoute from './routes/chat.route.js';
 
 async function main() {
   const config = loadEnvConfig();
@@ -42,6 +43,7 @@ async function main() {
 
   await fastify.register(analyzeRoute);
   await fastify.register(renderRoute);
+  await fastify.register(chatRoute);
 
   await fastify.listen({ port: config.port, host: '0.0.0.0' });
 }
