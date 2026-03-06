@@ -21,7 +21,7 @@ export class VertexAIImageService implements IImageService {
       model: config.modelName,
       generationConfig: {
         responseModalities: ['IMAGE', 'TEXT'],
-      },
+      } as any,
     });
   }
 
