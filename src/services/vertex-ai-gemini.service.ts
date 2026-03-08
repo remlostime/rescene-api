@@ -35,7 +35,7 @@ const remasterResponseSchema: ResponseSchema = {
           description: {
             type: SchemaType.STRING,
             description:
-              'A brief explanation in Chinese for the user, describing the vibe.',
+              'A brief explanation in English for the user, describing the vibe.',
           },
           nano_prompt: {
             type: SchemaType.STRING,
@@ -72,7 +72,7 @@ const chatResponseSchema: ResponseSchema = {
         },
         description: {
           type: SchemaType.STRING,
-          description: 'Chinese description of the final effect.',
+          description: 'A brief English description of the final effect.',
         },
         nano_prompt: {
           type: SchemaType.STRING,
