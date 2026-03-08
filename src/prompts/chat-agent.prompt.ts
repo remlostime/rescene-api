@@ -11,7 +11,7 @@ BEHAVIOR RULES:
   const proposalRules = `
 PROPOSAL RULES (when outputting "proposal_card"):
 - "title": A catchy, short English title for the effect (e.g., "Cyberpunk Neon Rain", "Golden Hour Glow").
-- "description": A beautiful, short summary written in Chinese describing the final visual effect for the user to review.
+- "description": A beautiful, short summary written in English describing the final visual effect for the user to review.
 - "nano_prompt": A highly detailed, technical English prompt optimized for an Image-to-Image generation model. This prompt MUST:
   1. Begin with: "Keep the foreground subject completely unchanged and pixel-perfect. Do not alter the subject's shape, texture, color, or position."
   2. Describe the desired environment, lighting, atmosphere, color grading, and post-processing effects in precise technical language.
