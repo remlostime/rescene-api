@@ -1,4 +1,4 @@
-import type { IImageService } from '../interfaces/image-service.interface.js';
+import type { IImageService } from '../../interfaces/image-service.interface.js';
 
 const PLACEHOLDER_1X1_JPEG = Buffer.from(
   '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoH' +
@@ -11,7 +11,7 @@ const PLACEHOLDER_1X1_JPEG = Buffer.from(
 );
 
 export class MockImageService implements IImageService {
-  async editImage(_sourceGcsUri: string, _prompt: string): Promise<Buffer> {
+  async editImage(_sourceUri: string, _prompt: string): Promise<Buffer> {
     return PLACEHOLDER_1X1_JPEG;
   }
 }

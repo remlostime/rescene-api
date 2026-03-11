@@ -43,10 +43,10 @@ const chatRoute: FastifyPluginAsync = async (fastify: FastifyInstance) => {
       }
 
       try {
-        const gcsUri = `gs://rescene-images/temp/${imageId}.jpg`;
+        const sourceUri = fastify.storageService.getStorageUri(`temp/${imageId}.jpg`);
 
         const data = await fastify.aiService.chatWithAgent(
-          gcsUri,
+          sourceUri,
           message,
           history,
         );

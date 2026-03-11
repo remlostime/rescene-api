@@ -12,12 +12,12 @@ export interface RemasterOptionsResponse {
 
 export interface IAIService {
   generateRemasterOptions(
-    imageGcsUri: string,
+    sourceUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse>;
 
   chatWithAgent(
-    gcsUri: string,
+    sourceUri: string,
     message: string,
     history: ChatMessage[],
   ): Promise<ChatResponse>;

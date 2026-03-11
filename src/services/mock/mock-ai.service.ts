@@ -1,8 +1,8 @@
 import type {
   IAIService,
   RemasterOptionsResponse,
-} from '../interfaces/ai-service.interface.js';
-import type { ChatMessage, ChatResponse } from '../interfaces/chat.types.js';
+} from '../../interfaces/ai-service.interface.js';
+import type { ChatMessage, ChatResponse } from '../../interfaces/chat.types.js';
 
 const ACTIONABLE_KEYWORDS = [
   'cyberpunk',
@@ -20,7 +20,7 @@ const ACTIONABLE_KEYWORDS = [
 
 export class MockAIService implements IAIService {
   async generateRemasterOptions(
-    _imageGcsUri: string,
+    _sourceUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse> {
     const locationLabel = locationName ?? 'unknown location';
@@ -50,7 +50,7 @@ export class MockAIService implements IAIService {
   }
 
   async chatWithAgent(
-    _gcsUri: string,
+    _sourceUri: string,
     message: string,
     _history: ChatMessage[],
   ): Promise<ChatResponse> {

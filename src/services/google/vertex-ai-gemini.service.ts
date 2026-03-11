@@ -7,10 +7,10 @@ import type {
 import type {
   IAIService,
   RemasterOptionsResponse,
-} from '../interfaces/ai-service.interface.js';
-import type { ChatMessage, ChatResponse } from '../interfaces/chat.types.js';
-import { buildDirectorPrompt } from '../prompts/director.prompt.js';
-import { buildChatAgentSystemPrompt } from '../prompts/chat-agent.prompt.js';
+} from '../../interfaces/ai-service.interface.js';
+import type { ChatMessage, ChatResponse } from '../../interfaces/chat.types.js';
+import { buildDirectorPrompt } from '../../prompts/director.prompt.js';
+import { buildChatAgentSystemPrompt } from '../../prompts/chat-agent.prompt.js';
 
 export interface VertexAIConfig {
   projectId: string;
@@ -117,7 +117,7 @@ export class VertexAIGeminiService implements IAIService {
   }
 
   async generateRemasterOptions(
-    imageGcsUri: string,
+    sourceUri: string,
     locationName?: string,
   ): Promise<RemasterOptionsResponse> {
     const textPrompt = buildDirectorPrompt(locationName);
@@ -130,7 +130,7 @@ export class VertexAIGeminiService implements IAIService {
             {
               fileData: {
                 mimeType: 'image/jpeg',
-                fileUri: imageGcsUri,
+                fileUri: sourceUri,
               },
             },
             { text: textPrompt },
@@ -156,12 +156,12 @@ export class VertexAIGeminiService implements IAIService {
   }
 
   async chatWithAgent(
-    gcsUri: string,
+    sourceUri: string,
     message: string,
     history: ChatMessage[],
   ): Promise<ChatResponse> {
     const imageFilePart = {
-      fileData: { mimeType: 'image/jpeg', fileUri: gcsUri },
+      fileData: { mimeType: 'image/jpeg', fileUri: sourceUri },
     };
 
     const contents: Content[] = [];
