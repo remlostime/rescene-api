@@ -3,24 +3,17 @@ import type { IAIService } from '../interfaces/ai-service.interface.js';
 import type { IImageService } from '../interfaces/image-service.interface.js';
 import type { IStorageService } from '../interfaces/storage-service.interface.js';
 
-import { GcsStorageService } from './google/gcs-storage.service.js';
-import { VertexAIGeminiService } from './google/vertex-ai-gemini.service.js';
-import { VertexAIImageService } from './google/vertex-ai-image.service.js';
-
-import { S3StorageService } from './aws/s3-storage.service.js';
-import { BedrockNovaService } from './aws/bedrock-nova.service.js';
-import { BedrockTitanImageService } from './aws/bedrock-titan-image.service.js';
-
-import { MockAIService } from './mock/mock-ai.service.js';
-import { MockImageService } from './mock/mock-image.service.js';
-
 export interface AppServices {
   storageService: IStorageService;
   aiService: IAIService;
   imageService: IImageService;
 }
 
-function createGoogleServices(config: EnvConfig): AppServices {
+async function createGoogleServices(config: EnvConfig): Promise<AppServices> {
+  const { GcsStorageService } = await import('./google/gcs-storage.service.js');
+  const { VertexAIGeminiService } = await import('./google/vertex-ai-gemini.service.js');
+  const { VertexAIImageService } = await import('./google/vertex-ai-image.service.js');
+
   const storageService = new GcsStorageService({
     bucketName: config.gcsBucketName,
   });
@@ -40,7 +33,11 @@ function createGoogleServices(config: EnvConfig): AppServices {
   return { storageService, aiService, imageService };
 }
 
-function createAwsServices(config: EnvConfig): AppServices {
+async function createAwsServices(config: EnvConfig): Promise<AppServices> {
+  const { S3StorageService } = await import('./aws/s3-storage.service.js');
+  const { BedrockNovaService } = await import('./aws/bedrock-nova.service.js');
+  const { BedrockTitanImageService } = await import('./aws/bedrock-titan-image.service.js');
+
   const s3Storage = new S3StorageService({
     region: config.awsRegion,
     bucketName: config.s3BucketName,
@@ -61,14 +58,22 @@ function createAwsServices(config: EnvConfig): AppServices {
   return { storageService: s3Storage, aiService, imageService };
 }
 
-export function createServices(config: EnvConfig): AppServices {
-  const storageForMock = config.cloudProvider === 'aws'
-    ? new S3StorageService({ region: config.awsRegion, bucketName: config.s3BucketName })
-    : new GcsStorageService({ bucketName: config.gcsBucketName });
+async function createMockStorageForProvider(config: EnvConfig): Promise<IStorageService> {
+  if (config.cloudProvider === 'aws') {
+    const { S3StorageService } = await import('./aws/s3-storage.service.js');
+    return new S3StorageService({ region: config.awsRegion, bucketName: config.s3BucketName });
+  }
+  const { GcsStorageService } = await import('./google/gcs-storage.service.js');
+  return new GcsStorageService({ bucketName: config.gcsBucketName });
+}
 
+export async function createServices(config: EnvConfig): Promise<AppServices> {
   if (config.useMockAI) {
+    const { MockAIService } = await import('./mock/mock-ai.service.js');
+    const { MockImageService } = await import('./mock/mock-image.service.js');
+    const storageService = await createMockStorageForProvider(config);
     return {
-      storageService: storageForMock,
+      storageService,
       aiService: new MockAIService(),
       imageService: new MockImageService(),
     };
