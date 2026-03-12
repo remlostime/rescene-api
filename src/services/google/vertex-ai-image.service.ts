@@ -1,6 +1,6 @@
 import { VertexAI } from '@google-cloud/vertexai';
 import type { GenerativeModel } from '@google-cloud/vertexai';
-import type { IImageService } from '../interfaces/image-service.interface.js';
+import type { IImageService } from '../../interfaces/image-service.interface.js';
 
 export interface VertexAIImageConfig {
   projectId: string;
@@ -25,7 +25,7 @@ export class VertexAIImageService implements IImageService {
     });
   }
 
-  async editImage(sourceGcsUri: string, prompt: string): Promise<Buffer> {
+  async editImage(sourceUri: string, prompt: string): Promise<Buffer> {
     const result = await this.model.generateContent({
       contents: [
         {
@@ -34,7 +34,7 @@ export class VertexAIImageService implements IImageService {
             {
               fileData: {
                 mimeType: 'image/jpeg',
-                fileUri: sourceGcsUri,
+                fileUri: sourceUri,
               },
             },
             { text: prompt },

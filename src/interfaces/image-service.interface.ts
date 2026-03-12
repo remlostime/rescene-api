@@ -1,3 +1,3 @@
 export interface IImageService {
-  editImage(sourceGcsUri: string, prompt: string): Promise<Buffer>;
+  editImage(sourceUri: string, prompt: string): Promise<Buffer>;
 }

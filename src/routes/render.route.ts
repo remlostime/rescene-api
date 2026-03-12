@@ -37,10 +37,10 @@ const renderRoute: FastifyPluginAsync = async (fastify: FastifyInstance) => {
       }
 
       try {
-        const sourceGcsUri = `gs://rescene-images/temp/${imageId}.jpg`;
+        const sourceUri = fastify.storageService.getStorageUri(`temp/${imageId}.jpg`);
 
         const resultBuffer = await fastify.imageService.editImage(
-          sourceGcsUri,
+          sourceUri,
           nano_prompt,
         );
 

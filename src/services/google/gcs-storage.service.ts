@@ -1,15 +1,15 @@
 import { Storage } from '@google-cloud/storage';
-import type { IStorageService } from '../interfaces/storage-service.interface.js';
+import type { IStorageService } from '../../interfaces/storage-service.interface.js';
 
-export interface StorageServiceConfig {
+export interface GcsStorageConfig {
   bucketName: string;
 }
 
-export class StorageService implements IStorageService {
+export class GcsStorageService implements IStorageService {
   private readonly storage: Storage;
   private readonly bucketName: string;
 
-  constructor(config: StorageServiceConfig) {
+  constructor(config: GcsStorageConfig) {
     this.storage = new Storage();
     this.bucketName = config.bucketName;
   }
@@ -33,5 +33,9 @@ export class StorageService implements IStorageService {
 
   getPublicUrl(destinationPath: string): string {
     return `https://storage.googleapis.com/${this.bucketName}/${destinationPath}`;
+  }
+
+  getStorageUri(destinationPath: string): string {
+    return `gs://${this.bucketName}/${destinationPath}`;
   }
 }
