@@ -17,7 +17,7 @@ run:
     - name: S3_BUCKET_NAME
       value: rescene-images
     - name: BEDROCK_NOVA_MODEL
-      value: us.amazon.nova-pro-v1:0
+      value: us.amazon.nova-lite-v1:0
     - name: BEDROCK_TITAN_IMAGE_MODEL
       value: amazon.titan-image-generator-v2:0
     - name: PORT
