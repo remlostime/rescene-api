@@ -25,6 +25,14 @@ export function loadEnvConfig(): EnvConfig {
   const useMockAI = process.env.USE_MOCK_AI === 'true';
   const rawProvider = process.env.CLOUD_PROVIDER ?? 'google';
 
+  console.log('[ReScene] ENV snapshot:', {
+    CLOUD_PROVIDER: process.env.CLOUD_PROVIDER,
+    USE_MOCK_AI: process.env.USE_MOCK_AI,
+    AWS_REGION: process.env.AWS_REGION,
+    GCP_PROJECT_ID: process.env.GCP_PROJECT_ID,
+    PORT: process.env.PORT,
+  });
+
   if (rawProvider !== 'google' && rawProvider !== 'aws') {
     throw new Error(
       `Invalid CLOUD_PROVIDER "${rawProvider}". Must be "google" or "aws".`,

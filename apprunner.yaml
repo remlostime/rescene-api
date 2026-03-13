@@ -10,3 +10,18 @@ run:
   command: node dist/index.js
   network:
     port: 8080
+  env:
+    - name: CLOUD_PROVIDER
+      value: aws
+    - name: AWS_REGION
+      value: us-east-1
+    - name: S3_BUCKET_NAME
+      value: rescene-images
+    - name: BEDROCK_NOVA_MODEL
+      value: us.amazon.nova-pro-v1:0
+    - name: BEDROCK_TITAN_IMAGE_MODEL
+      value: amazon.titan-image-generator-v2:0
+    - name: PORT
+      value: "8080"
+    - name: USE_MOCK_AI
+      value: "false"
