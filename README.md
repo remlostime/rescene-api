@@ -344,7 +344,7 @@ gcloud auth application-default login
 CLOUD_PROVIDER=aws
 AWS_REGION=us-east-1
 S3_BUCKET_NAME=rescene-images
-BEDROCK_NOVA_MODEL=us.amazon.nova-pro-v1:0
+BEDROCK_NOVA_MODEL=us.amazon.nova-lite-v1:0
 BEDROCK_TITAN_IMAGE_MODEL=amazon.titan-image-generator-v2:0
 ```
 
@@ -497,5 +497,5 @@ Generate a remastered image from a previously uploaded photo.
 | **AWS**                     |                                                  |                                      |
 | `AWS_REGION`                | `us-east-1`                                      | AWS region                           |
 | `S3_BUCKET_NAME`            | `rescene-images`                                 | S3 bucket name                       |
-| `BEDROCK_NOVA_MODEL`        | `us.amazon.nova-pro-v1:0`                        | Bedrock model for AI agent           |
+| `BEDROCK_NOVA_MODEL`        | `us.amazon.nova-lite-v1:0`                        | Bedrock model for AI agent           |
 | `BEDROCK_TITAN_IMAGE_MODEL` | `amazon.titan-image-generator-v2:0`              | Bedrock model for image generation   |

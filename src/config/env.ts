@@ -68,7 +68,7 @@ export function loadEnvConfig(): EnvConfig {
     // AWS
     awsRegion: process.env.AWS_REGION ?? 'us-east-1',
     s3BucketName: process.env.S3_BUCKET_NAME ?? 'rescene-images',
-    bedrockNovaModel: process.env.BEDROCK_NOVA_MODEL ?? 'us.amazon.nova-pro-v1:0',
+    bedrockNovaModel: process.env.BEDROCK_NOVA_MODEL ?? 'us.amazon.nova-lite-v1:0',
     bedrockTitanImageModel: process.env.BEDROCK_TITAN_IMAGE_MODEL ?? 'amazon.titan-image-generator-v2:0',
   };
 }
